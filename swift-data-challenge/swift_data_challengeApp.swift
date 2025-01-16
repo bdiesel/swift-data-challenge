@@ -4,7 +4,7 @@
 //
 //  Created by Brian Diesel on 1/15/25.
 //
-
+import SwiftData
 import SwiftUI
 
 @main
@@ -13,5 +13,6 @@ struct swift_data_challengeApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: User.self)
     }
 }

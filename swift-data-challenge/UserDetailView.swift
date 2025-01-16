@@ -42,10 +42,10 @@ struct UserDetailView: View {
                 Text(String(user.about))
             }
             
-            VStack{
-                Text("Registered")
-                Text(String(user.registered))
-            }
+//            VStack{
+//                Text("Registered")
+//                Text(String(user.registered))
+//            }
             VStack{
                 Text("Tags")
                 List(user.tags, id: \.self) { tag in

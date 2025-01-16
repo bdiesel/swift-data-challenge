@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
-    @State private var users = [User]()
-    
+    @Environment(\.modelContext) var modelContext
+    @Query var users: [User]
+
     var body: some View {
         NavigationStack {
             List {
@@ -36,7 +38,11 @@ struct ContentView: View {
             let (data, _) = try await URLSession.shared.data(from: url)
 
             if let decodedResponse = try? JSONDecoder().decode([User].self, from: data) {
-                users = decodedResponse
+                for user in decodedResponse {
+                    modelContext.insert(user)
+                }
+            } else {
+                print("Decode failed")
             }
             // more code to come
         } catch {
