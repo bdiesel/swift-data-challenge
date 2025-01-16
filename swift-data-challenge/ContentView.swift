@@ -7,29 +7,23 @@
 
 import SwiftUI
 
-struct User: Decodable {
-    let id: String
-    let name: String
-}
-
-struct Friend: Codable{
-    let id: String
-    let name: String
-}
-
 struct ContentView: View {
     @State private var users = [User]()
     
     var body: some View {
+        NavigationStack {
             List {
                 ForEach(users, id: \.id) { user in
-                    VStack(alignment: .leading) {
+                    NavigationLink {
+                        UserDetailView(user: user)
+                    } label: {
                         Text(user.name)
                     }
                 }
             }.task {
                 await loadData()
             }
+        }
     }
     
     func loadData() async {
@@ -43,8 +37,6 @@ struct ContentView: View {
 
             if let decodedResponse = try? JSONDecoder().decode([User].self, from: data) {
                 users = decodedResponse
-            } else {
-                print("Could not parse data")
             }
             // more code to come
         } catch {
