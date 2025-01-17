@@ -52,6 +52,12 @@ struct UserDetailView: View {
                     Text(tag)
                 }
             }
+            VStack{
+                Text("Freiends")
+                List(user.friends, id: \.self) { friend in
+                    Text(friend.name)
+                }
+            }
         }
     }
 }
@@ -75,6 +81,9 @@ struct UserDetailView: View {
             "eiusmod",
             "minim",
             "tempor"
+        ],
+        friends: [
+            Friend(id: "f42f2fcf-fc81-4858-985e-8e7b5a12c2a9", name: "Osborn Moss")
         ]
     )
     UserDetailView(user: user)

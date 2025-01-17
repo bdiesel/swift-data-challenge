@@ -11,7 +11,7 @@ import SwiftData
 @Model
 class User: Codable {
     enum CodingKeys: CodingKey {
-      case id, name, isActive, age, company, email, address, about, tags,  registered
+      case id, name, isActive, age, company, email, address, about, tags,  registered, friends
     }
 
     var id: String
@@ -25,9 +25,9 @@ class User: Codable {
     //var registered: Date
     var registered: String
     var tags: [String]
-
+    var friends: [Friend]
    
-    init(id: String, name: String, isActive: Bool, age: Int, company: String, email: String, address: String, about: String, registered: String, tags: [String]) {
+    init(id: String, name: String, isActive: Bool, age: Int, company: String, email: String, address: String, about: String, registered: String, tags: [String], friends: [Friend]) {
         self.id = id
         self.name = name
         self.isActive = isActive
@@ -39,6 +39,7 @@ class User: Codable {
         self.registered = registered
         //self.registered = Date(timeIntervalSince1970: TimeInterval(registered) ?? 0)
         self.tags = tags
+        self.friends = friends
     }
     
     required init(from decoder: Decoder) throws {
@@ -54,6 +55,7 @@ class User: Codable {
         //self.registered = try container.decode(Date.self, forKey: .registered)
         self.registered = try container.decode(String.self, forKey: .registered)
         self.tags = try container.decode([String].self, forKey: .tags)
+        self.friends = try container.decode([Friend].self, forKey: .friends)
       }
     
     func encode(to encoder: Encoder) throws {
@@ -65,7 +67,25 @@ class User: Codable {
 }
 
 
-struct Friend: Codable{
-    let id: String
-    let name: String
+@Model
+class Friend: Decodable {
+    
+    enum CodingKeys: CodingKey {
+      case id, name
+    }
+    
+    var id: String
+    var name: String
+    
+    
+    init(id: String, name: String) {
+        self.id = id
+        self.name = name
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.name = try container.decode(String.self, forKey: .name)
+    }
 }
