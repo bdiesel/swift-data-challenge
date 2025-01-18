@@ -13,7 +13,9 @@ class User: Codable {
     enum CodingKeys: CodingKey {
       case id, name, isActive, age, company, email, address, about, tags,  registered, friends
     }
-
+    
+    @Relationship(deleteRule: .cascade) var freinds: [Friend]? = [Friend]()
+    
     var id: String
     var name: String
     var isActive: Bool
@@ -25,9 +27,13 @@ class User: Codable {
     //var registered: Date
     var registered: String
     var tags: [String]
-    var friends: [Friend]
+    //var friends: [Friend]
+    
+    var unwrappedFriends: [Friend] {
+        freinds ?? []
+    }
    
-    init(id: String, name: String, isActive: Bool, age: Int, company: String, email: String, address: String, about: String, registered: String, tags: [String], friends: [Friend]) {
+    init(id: String, name: String, isActive: Bool, age: Int, company: String, email: String, address: String, about: String, registered: String, tags: [String]) {
         self.id = id
         self.name = name
         self.isActive = isActive
@@ -39,7 +45,7 @@ class User: Codable {
         self.registered = registered
         //self.registered = Date(timeIntervalSince1970: TimeInterval(registered) ?? 0)
         self.tags = tags
-        self.friends = friends
+       // self.friends = friends
     }
     
     required init(from decoder: Decoder) throws {
@@ -55,7 +61,7 @@ class User: Codable {
         //self.registered = try container.decode(Date.self, forKey: .registered)
         self.registered = try container.decode(String.self, forKey: .registered)
         self.tags = try container.decode([String].self, forKey: .tags)
-        self.friends = try container.decode([Friend].self, forKey: .friends)
+        //self.friends = try container.decode([Friend].self, forKey: .friends)
       }
     
     func encode(to encoder: Encoder) throws {
@@ -68,7 +74,7 @@ class User: Codable {
 
 
 @Model
-class Friend: Decodable {
+class Friend {
     
     enum CodingKeys: CodingKey {
       case id, name
